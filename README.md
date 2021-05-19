@@ -1,11 +1,30 @@
 # Svelte Scoreboard
 
-Doing a crash course on Svelte. (Traversy Media Crash course)
+Project from a crash course on Svelte by 
+[Traversy Media](https://www.youtube.com/watch?v=uK2RnIzrQ0M&t=313s).
 
 
+## Installation 
 
+Install Svente and make a folder for the project
+ with npm
+
+```npm 
+  npx degit sveltejs/template svelte-scoreboard
+  cd svelte-scoreboard
+```
+    
+## Deployment
+
+To deploy this project run
+
+```bash
+  
+```
+
+  
 ## Acknowledgements
 
- - [Awesome Readme Templates](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
- - [Awesome README](https://github.com/matiassingers/awesome-readme)
- - [How to write a Good readme](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
+ - [Svelte Crash Course](https://www.youtube.com/watch?v=uK2RnIzrQ0M&t=313s)
+ - [Svelte Website](https://svelte.dev/)
+ - [The easiest way to create a README](https://readme.so/)
