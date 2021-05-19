@@ -6,7 +6,7 @@ Project from a crash course on Svelte by
 
 ## Installation 
 
-Install Svente and make a folder for the project
+Install Svelte and make a folder for the project
  with npm
 
 ```npm 
