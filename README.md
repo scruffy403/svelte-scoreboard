@@ -13,6 +13,21 @@ Install Svelte and make a folder for the project
   npx degit sveltejs/template svelte-scoreboard
   cd svelte-scoreboard
 ```
+I changed the title in public/index.html from 
+
+```html
+    <title>Svelte App</title>
+```
+to 
+```
+    <title>Scoreboard</title>
+```
+
+Then installed dependencied by running 
+
+```npm
+    npm i
+```
     
 ## Deployment
 
