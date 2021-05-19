@@ -343,53 +343,180 @@ var app = (function () {
 
     const file = "src/App.svelte";
 
-    function create_fragment(ctx) {
-    	let div1;
-    	let div0;
-    	let h1;
-    	let t2;
-    	let h3;
-    	let t3;
-    	let t4;
+    // (16:23) {:else}
+    function create_else_block(ctx) {
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text("+");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block.name,
+    		type: "else",
+    		source: "(16:23) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (16:4) {#if showControls}
+    function create_if_block_1(ctx) {
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text("-");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1.name,
+    		type: "if",
+    		source: "(16:4) {#if showControls}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (20:2) {#if showControls}
+    function create_if_block(ctx) {
     	let button0;
-    	let t6;
+    	let t1;
     	let button1;
-    	let t8;
+    	let t3;
     	let input;
     	let mounted;
     	let dispose;
 
     	const block = {
     		c: function create() {
+    			button0 = element("button");
+    			button0.textContent = "+1";
+    			t1 = space();
+    			button1 = element("button");
+    			button1.textContent = "-1";
+    			t3 = space();
+    			input = element("input");
+    			attr_dev(button0, "class", "btn");
+    			add_location(button0, file, 20, 3, 462);
+    			attr_dev(button1, "class", "btn btn-dark");
+    			add_location(button1, file, 21, 3, 517);
+    			attr_dev(input, "type", "number");
+    			add_location(input, file, 22, 3, 584);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, button0, anchor);
+    			insert_dev(target, t1, anchor);
+    			insert_dev(target, button1, anchor);
+    			insert_dev(target, t3, anchor);
+    			insert_dev(target, input, anchor);
+    			set_input_value(input, /*points*/ ctx[0]);
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(button0, "click", /*addPoint*/ ctx[3], false, false, false),
+    					listen_dev(button1, "click", /*removePoint*/ ctx[4], false, false, false),
+    					listen_dev(input, "input", /*input_input_handler*/ ctx[6])
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*points*/ 1 && to_number(input.value) !== /*points*/ ctx[0]) {
+    				set_input_value(input, /*points*/ ctx[0]);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(button0);
+    			if (detaching) detach_dev(t1);
+    			if (detaching) detach_dev(button1);
+    			if (detaching) detach_dev(t3);
+    			if (detaching) detach_dev(input);
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block.name,
+    		type: "if",
+    		source: "(20:2) {#if showControls}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment(ctx) {
+    	let div1;
+    	let div0;
+    	let h1;
+    	let t0;
+    	let t1;
+    	let button;
+    	let t2;
+    	let h3;
+    	let t3;
+    	let t4;
+    	let t5;
+    	let mounted;
+    	let dispose;
+
+    	function select_block_type(ctx, dirty) {
+    		if (/*showControls*/ ctx[1]) return create_if_block_1;
+    		return create_else_block;
+    	}
+
+    	let current_block_type = select_block_type(ctx);
+    	let if_block0 = current_block_type(ctx);
+    	let if_block1 = /*showControls*/ ctx[1] && create_if_block(ctx);
+
+    	const block = {
+    		c: function create() {
     			div1 = element("div");
     			div0 = element("div");
     			h1 = element("h1");
-    			h1.textContent = `${/*name*/ ctx[1]}!`;
+    			t0 = text(/*name*/ ctx[2]);
+    			t1 = space();
+    			button = element("button");
+    			if_block0.c();
     			t2 = space();
     			h3 = element("h3");
-    			t3 = text(/*points*/ ctx[0]);
-    			t4 = space();
-    			button0 = element("button");
-    			button0.textContent = "+1";
-    			t6 = space();
-    			button1 = element("button");
-    			button1.textContent = "-1";
-    			t8 = space();
-    			input = element("input");
+    			t3 = text("Points: ");
+    			t4 = text(/*points*/ ctx[0]);
+    			t5 = space();
+    			if (if_block1) if_block1.c();
+    			attr_dev(button, "class", "btn btn-sm");
+    			add_location(button, file, 14, 3, 298);
     			attr_dev(h1, "class", "svelte-o2gch5");
-    			add_location(h1, file, 10, 2, 191);
+    			add_location(h1, file, 12, 2, 280);
     			attr_dev(h3, "class", "svelte-o2gch5");
-    			add_location(h3, file, 11, 2, 210);
-    			attr_dev(button0, "class", "btn");
-    			add_location(button0, file, 12, 2, 230);
-    			attr_dev(button1, "class", "btn btn-dark");
-    			add_location(button1, file, 13, 2, 284);
-    			attr_dev(input, "type", "number");
-    			add_location(input, file, 14, 2, 350);
+    			add_location(h3, file, 18, 2, 412);
     			attr_dev(div0, "class", "card");
-    			add_location(div0, file, 9, 1, 170);
+    			add_location(div0, file, 11, 1, 259);
     			attr_dev(div1, "class", "container");
-    			add_location(div1, file, 8, 0, 145);
+    			add_location(div1, file, 10, 0, 234);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -398,40 +525,56 @@ var app = (function () {
     			insert_dev(target, div1, anchor);
     			append_dev(div1, div0);
     			append_dev(div0, h1);
+    			append_dev(h1, t0);
+    			append_dev(h1, t1);
+    			append_dev(h1, button);
+    			if_block0.m(button, null);
     			append_dev(div0, t2);
     			append_dev(div0, h3);
     			append_dev(h3, t3);
-    			append_dev(div0, t4);
-    			append_dev(div0, button0);
-    			append_dev(div0, t6);
-    			append_dev(div0, button1);
-    			append_dev(div0, t8);
-    			append_dev(div0, input);
-    			set_input_value(input, /*points*/ ctx[0]);
+    			append_dev(h3, t4);
+    			append_dev(div0, t5);
+    			if (if_block1) if_block1.m(div0, null);
 
     			if (!mounted) {
-    				dispose = [
-    					listen_dev(button0, "click", /*addPoint*/ ctx[2], false, false, false),
-    					listen_dev(button1, "click", /*removePoint*/ ctx[3], false, false, false),
-    					listen_dev(input, "input", /*input_input_handler*/ ctx[4])
-    				];
-
+    				dispose = listen_dev(button, "click", /*toggleControls*/ ctx[5], false, false, false);
     				mounted = true;
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*points*/ 1) set_data_dev(t3, /*points*/ ctx[0]);
+    			if (current_block_type !== (current_block_type = select_block_type(ctx))) {
+    				if_block0.d(1);
+    				if_block0 = current_block_type(ctx);
 
-    			if (dirty & /*points*/ 1 && to_number(input.value) !== /*points*/ ctx[0]) {
-    				set_input_value(input, /*points*/ ctx[0]);
+    				if (if_block0) {
+    					if_block0.c();
+    					if_block0.m(button, null);
+    				}
+    			}
+
+    			if (dirty & /*points*/ 1) set_data_dev(t4, /*points*/ ctx[0]);
+
+    			if (/*showControls*/ ctx[1]) {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
+    				} else {
+    					if_block1 = create_if_block(ctx);
+    					if_block1.c();
+    					if_block1.m(div0, null);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
     			}
     		},
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div1);
+    			if_block0.d();
+    			if (if_block1) if_block1.d();
     			mounted = false;
-    			run_all(dispose);
+    			dispose();
     		}
     	};
 
@@ -451,8 +594,10 @@ var app = (function () {
     	validate_slots("App", slots, []);
     	let name = "John Doe";
     	let points = 100;
+    	let showControls = false;
     	const addPoint = () => $$invalidate(0, points += 1);
     	const removePoint = () => $$invalidate(0, points -= 1);
+    	const toggleControls = () => $$invalidate(1, showControls = !showControls);
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
@@ -464,18 +609,34 @@ var app = (function () {
     		$$invalidate(0, points);
     	}
 
-    	$$self.$capture_state = () => ({ name, points, addPoint, removePoint });
+    	$$self.$capture_state = () => ({
+    		name,
+    		points,
+    		showControls,
+    		addPoint,
+    		removePoint,
+    		toggleControls
+    	});
 
     	$$self.$inject_state = $$props => {
-    		if ("name" in $$props) $$invalidate(1, name = $$props.name);
+    		if ("name" in $$props) $$invalidate(2, name = $$props.name);
     		if ("points" in $$props) $$invalidate(0, points = $$props.points);
+    		if ("showControls" in $$props) $$invalidate(1, showControls = $$props.showControls);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [points, name, addPoint, removePoint, input_input_handler];
+    	return [
+    		points,
+    		showControls,
+    		name,
+    		addPoint,
+    		removePoint,
+    		toggleControls,
+    		input_input_handler
+    	];
     }
 
     class App extends SvelteComponentDev {
