@@ -28,6 +28,14 @@ Then installed dependencied by running
 ```npm
     npm i
 ```
+
+## Run Local Server
+
+To run it on a local server run
+
+```bash
+    npm run dev
+```
     
 ## Deployment
 
