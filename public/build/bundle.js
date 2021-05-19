@@ -27,6 +27,10 @@ var app = (function () {
     function is_empty(obj) {
         return Object.keys(obj).length === 0;
     }
+
+    function append(target, node) {
+        target.appendChild(node);
+    }
     function insert(target, node, anchor) {
         target.insertBefore(node, anchor || null);
     }
@@ -42,14 +46,24 @@ var app = (function () {
     function space() {
         return text(' ');
     }
+    function listen(node, event, handler, options) {
+        node.addEventListener(event, handler, options);
+        return () => node.removeEventListener(event, handler, options);
+    }
     function attr(node, attribute, value) {
         if (value == null)
             node.removeAttribute(attribute);
         else if (node.getAttribute(attribute) !== value)
             node.setAttribute(attribute, value);
     }
+    function to_number(value) {
+        return value === '' ? null : +value;
+    }
     function children(element) {
         return Array.from(element.childNodes);
+    }
+    function set_input_value(input, value) {
+        input.value = value == null ? '' : value;
     }
     function custom_event(type, detail) {
         const e = document.createEvent('CustomEvent');
@@ -259,6 +273,10 @@ var app = (function () {
     function dispatch_dev(type, detail) {
         document.dispatchEvent(custom_event(type, Object.assign({ version: '3.38.2' }, detail)));
     }
+    function append_dev(target, node) {
+        dispatch_dev('SvelteDOMInsert', { target, node });
+        append(target, node);
+    }
     function insert_dev(target, node, anchor) {
         dispatch_dev('SvelteDOMInsert', { target, node, anchor });
         insert(target, node, anchor);
@@ -267,12 +285,32 @@ var app = (function () {
         dispatch_dev('SvelteDOMRemove', { node });
         detach(node);
     }
+    function listen_dev(node, event, handler, options, has_prevent_default, has_stop_propagation) {
+        const modifiers = options === true ? ['capture'] : options ? Array.from(Object.keys(options)) : [];
+        if (has_prevent_default)
+            modifiers.push('preventDefault');
+        if (has_stop_propagation)
+            modifiers.push('stopPropagation');
+        dispatch_dev('SvelteDOMAddEventListener', { node, event, handler, modifiers });
+        const dispose = listen(node, event, handler, options);
+        return () => {
+            dispatch_dev('SvelteDOMRemoveEventListener', { node, event, handler, modifiers });
+            dispose();
+        };
+    }
     function attr_dev(node, attribute, value) {
         attr(node, attribute, value);
         if (value == null)
             dispatch_dev('SvelteDOMRemoveAttribute', { node, attribute });
         else
             dispatch_dev('SvelteDOMSetAttribute', { node, attribute, value });
+    }
+    function set_data_dev(text, data) {
+        data = '' + data;
+        if (text.wholeText === data)
+            return;
+        dispatch_dev('SvelteDOMSetData', { node: text, data });
+        text.data = data;
     }
     function validate_slots(name, slot, keys) {
         for (const slot_key of Object.keys(slot)) {
@@ -306,36 +344,94 @@ var app = (function () {
     const file = "src/App.svelte";
 
     function create_fragment(ctx) {
+    	let div1;
+    	let div0;
     	let h1;
     	let t2;
     	let h3;
+    	let t3;
+    	let t4;
+    	let button0;
+    	let t6;
+    	let button1;
+    	let t8;
+    	let input;
+    	let mounted;
+    	let dispose;
 
     	const block = {
     		c: function create() {
+    			div1 = element("div");
+    			div0 = element("div");
     			h1 = element("h1");
-    			h1.textContent = `${/*name*/ ctx[0]}!`;
+    			h1.textContent = `${/*name*/ ctx[1]}!`;
     			t2 = space();
     			h3 = element("h3");
-    			h3.textContent = `${/*points*/ ctx[1]}`;
-    			attr_dev(h1, "class", "svelte-1olwtgd");
-    			add_location(h1, file, 6, 0, 64);
-    			add_location(h3, file, 7, 0, 81);
+    			t3 = text(/*points*/ ctx[0]);
+    			t4 = space();
+    			button0 = element("button");
+    			button0.textContent = "+1";
+    			t6 = space();
+    			button1 = element("button");
+    			button1.textContent = "-1";
+    			t8 = space();
+    			input = element("input");
+    			attr_dev(h1, "class", "svelte-o2gch5");
+    			add_location(h1, file, 10, 2, 191);
+    			attr_dev(h3, "class", "svelte-o2gch5");
+    			add_location(h3, file, 11, 2, 210);
+    			attr_dev(button0, "class", "btn");
+    			add_location(button0, file, 12, 2, 230);
+    			attr_dev(button1, "class", "btn btn-dark");
+    			add_location(button1, file, 13, 2, 284);
+    			attr_dev(input, "type", "number");
+    			add_location(input, file, 14, 2, 350);
+    			attr_dev(div0, "class", "card");
+    			add_location(div0, file, 9, 1, 170);
+    			attr_dev(div1, "class", "container");
+    			add_location(div1, file, 8, 0, 145);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, h1, anchor);
-    			insert_dev(target, t2, anchor);
-    			insert_dev(target, h3, anchor);
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, div0);
+    			append_dev(div0, h1);
+    			append_dev(div0, t2);
+    			append_dev(div0, h3);
+    			append_dev(h3, t3);
+    			append_dev(div0, t4);
+    			append_dev(div0, button0);
+    			append_dev(div0, t6);
+    			append_dev(div0, button1);
+    			append_dev(div0, t8);
+    			append_dev(div0, input);
+    			set_input_value(input, /*points*/ ctx[0]);
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(button0, "click", /*addPoint*/ ctx[2], false, false, false),
+    					listen_dev(button1, "click", /*removePoint*/ ctx[3], false, false, false),
+    					listen_dev(input, "input", /*input_input_handler*/ ctx[4])
+    				];
+
+    				mounted = true;
+    			}
     		},
-    		p: noop,
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*points*/ 1) set_data_dev(t3, /*points*/ ctx[0]);
+
+    			if (dirty & /*points*/ 1 && to_number(input.value) !== /*points*/ ctx[0]) {
+    				set_input_value(input, /*points*/ ctx[0]);
+    			}
+    		},
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(h1);
-    			if (detaching) detach_dev(t2);
-    			if (detaching) detach_dev(h3);
+    			if (detaching) detach_dev(div1);
+    			mounted = false;
+    			run_all(dispose);
     		}
     	};
 
@@ -355,24 +451,31 @@ var app = (function () {
     	validate_slots("App", slots, []);
     	let name = "John Doe";
     	let points = 100;
+    	const addPoint = () => $$invalidate(0, points += 1);
+    	const removePoint = () => $$invalidate(0, points -= 1);
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<App> was created with unknown prop '${key}'`);
     	});
 
-    	$$self.$capture_state = () => ({ name, points });
+    	function input_input_handler() {
+    		points = to_number(this.value);
+    		$$invalidate(0, points);
+    	}
+
+    	$$self.$capture_state = () => ({ name, points, addPoint, removePoint });
 
     	$$self.$inject_state = $$props => {
-    		if ("name" in $$props) $$invalidate(0, name = $$props.name);
-    		if ("points" in $$props) $$invalidate(1, points = $$props.points);
+    		if ("name" in $$props) $$invalidate(1, name = $$props.name);
+    		if ("points" in $$props) $$invalidate(0, points = $$props.points);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [name, points];
+    	return [points, name, addPoint, removePoint, input_input_handler];
     }
 
     class App extends SvelteComponentDev {
