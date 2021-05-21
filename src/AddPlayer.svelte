@@ -19,9 +19,7 @@
 </script>
 
 <form on:submit={onSubmit} class="grid-3">
-    <input type="text" placeholder="Player Name" bind:value=
-    {player.name}>
-    <input type="number" placeholder="Player Points" bind:value=
-    {player.points}>
+    <input type="text" placeholder="Player Name" bind:value={player.name}>
+    <input type="number" placeholder="Player Points" bind:value={player.points}>
     <input type="submit" value="Add Player" class="btn btn-primary">
 </form>

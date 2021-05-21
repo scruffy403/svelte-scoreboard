@@ -1,4 +1,8 @@
 <script>
+    import { createEventDispatcher } from 'svelte';
+
+    const dispatch = createEventDispatcher();
+
 	import Navbar from './Navbar.svelte';
 
 	export let name;
@@ -8,6 +12,7 @@
 	const addPoint = () => (points += 1);
 	const removePoint = () => (points -= 1);
 	const toggleControls = () => (showControls = !showControls);
+    const onDelete = () => dispatch("removeplayer", name)
 </script>
 
 
@@ -18,6 +23,7 @@
 		<button class="btn btn-sm" on:click={toggleControls}>
 			{#if showControls}-{:else}+{/if}
 		</button>
+        <button class="btn btn-danger btn-sm" on:click={onDelete}>x</button>
 	</h1>
 	<h3>Points: {points}</h3>
 	{#if showControls}
