@@ -19,7 +19,7 @@ I changed the title in public/index.html from
     <title>Svelte App</title>
 ```
 to 
-```
+```html
     <title>Scoreboard</title>
 ```
 
