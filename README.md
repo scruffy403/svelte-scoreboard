@@ -36,14 +36,6 @@ To run it on a local server run
 ```bash
     npm run dev
 ```
-    
-## Deployment
-
-To deploy this project run
-
-```bash
-  
-```
 
   
 ## Acknowledgements
